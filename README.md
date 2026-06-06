@@ -1,4 +1,4 @@
-# Thirty Minutes to Five Stars
+# Investigating the relationship between cooking time and user ratings
 
 **Names:** Bora Vanli and Marcos Lopez
 
