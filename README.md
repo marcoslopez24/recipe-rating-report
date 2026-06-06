@@ -1,4 +1,4 @@
-# Investigating the relationship between cooking time and user ratings
+# Investigating the Relationship Between Cooking Time and User Ratings
 
 **Names:** Bora Vanli and Marcos Lopez
 
