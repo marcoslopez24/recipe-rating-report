@@ -10,7 +10,17 @@ The Recipes and Ratings dataset contains recipe-level information from Food.com 
 
 Our main question is: **Do quick recipes receive different average ratings than longer recipes?** We define quick recipes as recipes taking 30 minutes or less. This question matters because recipe users often choose recipes based on time, and recipe creators may want to know whether faster recipes are rewarded differently by reviewers.
 
-The raw recipe table has 83,782 rows and 12 columns. The interaction table has 731,927 rows and 5 columns. The columns most relevant to our question are `minutes`, `n_steps`, `n_ingredients`, `tags`, `nutrition`, `rating`, and `average_rating`, where `average_rating` is computed by averaging user ratings for each recipe.
+The raw recipe table has 83,782 rows and 12 columns. The interaction table has 731,927 rows and 5 columns. The columns most relevant to our question are:
+
+| Column | Description |
+|---|---|
+| `minutes` | Preparation time listed for the recipe. |
+| `n_steps` | Number of preparation steps in the recipe. |
+| `n_ingredients` | Number of ingredients used in the recipe. |
+| `tags` | Recipe labels such as meal type, dietary category, or preparation-time category. |
+| `nutrition` | List of nutrition values, later split into calories, fat, sugar, sodium, protein, saturated fat, and carbohydrates. |
+| `rating` | Individual user rating from the interactions table. |
+| `average_rating` | Recipe-level mean rating computed after treating 0 ratings as missing. |
 
 ## Data Cleaning and Exploratory Data Analysis
 
