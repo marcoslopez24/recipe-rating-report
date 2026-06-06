@@ -8,13 +8,13 @@ This project analyzes Food.com recipes and ratings to understand whether quicker
 
 The Recipes and Ratings dataset contains recipe-level information from Food.com and user interactions with those recipes. The recipe table includes preparation time, tags, nutrition, ingredients, and number of steps. The interactions table includes user ratings and reviews.
 
-Our main question is: **Do quick recipes receive different average ratings than longer recipes?** We define quick recipes as recipes taking 30 minutes or less.
+Our main question is: **Do quick recipes receive different average ratings than longer recipes?** We define quick recipes as recipes taking 30 minutes or less. This question matters because recipe users often choose recipes based on time, and recipe creators may want to know whether faster recipes are rewarded differently by reviewers.
 
 The raw recipe table has 83,782 rows and 12 columns. The interaction table has 731,927 rows and 5 columns. The columns most relevant to our question are `minutes`, `n_steps`, `n_ingredients`, `tags`, `nutrition`, `rating`, and `average_rating`, where `average_rating` is computed by averaging user ratings for each recipe.
 
 ## Data Cleaning and Exploratory Data Analysis
 
-We treated ratings of 0 as missing because they represent reviews without a rating rather than true zero-star ratings. We then computed each recipe's average rating, merged those averages into the recipe table, parsed the list-like `nutrition`, `tags`, and `ingredients` columns, and created time buckets. For analyses involving preparation time, we removed nonpositive times and the top 0.5% of preparation times to reduce the impact of extreme entry errors.
+We treated ratings of 0 as missing because the dataset uses 0 for interactions where a user left a review without assigning a rating, rather than as a true zero-star review. We then computed each recipe's average rating, merged those averages into the recipe table, parsed the list-like `nutrition`, `tags`, and `ingredients` columns, and created time buckets. For analyses involving preparation time, we removed nonpositive times and the top 0.5% of preparation times to reduce the impact of extreme time-entry errors on our visualizations and tests.
 
 Cleaned data preview:
 
@@ -60,7 +60,7 @@ Alternative hypothesis: quick recipes and longer recipes have different mean ave
 
 We used a two-sided permutation test with the difference in mean average rating as the test statistic. Quick recipes had a mean average rating of 4.6446, while longer recipes had a mean average rating of 4.6096. The observed difference was 0.0351 rating points. In 5,000 permutations, none of the simulated differences were at least as extreme as the observed value, so the p-value was less than 0.0002.
 
-At a 5% significance level, we reject the null hypothesis. The data suggests that quick and longer recipes have different mean average ratings, with quick recipes rated slightly higher.
+At a 5% significance level, we reject the null hypothesis. The data suggests that quick and longer recipes have different mean average ratings, with quick recipes rated slightly higher. The effect is statistically significant, but it is small in practical terms because the difference is only about 0.035 points on a 1-to-5 rating scale.
 
 <iframe src="assets/hypothesis-test.html" width="100%" height="520" frameborder="0"></iframe>
 
@@ -84,7 +84,7 @@ This model is weak because average ratings are highly concentrated near 5 stars 
 
 ## Final Model
 
-The final model uses a random forest regressor and adds engineered features that better describe recipe complexity and content. These include log preparation time, number of ingredients, steps per ingredient, calories per ingredient, parsed nutrition values, selected tag indicators, and selected ingredient indicators.
+The final model uses a random forest regressor and adds engineered features that better describe recipe complexity and content. These include log preparation time, number of ingredients, steps per ingredient, calories per ingredient, parsed nutrition values, selected tag indicators, and selected ingredient indicators. These features are reasonable before fitting the model because recipe rating may depend on more than time alone: complexity, recipe type, nutrition, and common ingredients can all influence a user's experience.
 
 We tuned the random forest with `GridSearchCV` using 3-fold cross-validation on the training data. The grid searched `max_depth`, `min_samples_leaf`, and `n_estimators`. The best parameters were `max_depth = 10`, `min_samples_leaf = 30`, and `n_estimators = 80`. After cross-validation selected the model, we evaluated it once on the held-out test set.
 
