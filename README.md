@@ -1,6 +1,6 @@
 # Thirty Minutes to Five Stars
 
-**Names:** Marcos Lopez and Bora Vanli
+**Names:** Bora Vanli and Marcos Lopez
 
 This project analyzes Food.com recipes and ratings to understand whether quicker recipes are rated differently from longer recipes, and whether recipe attributes can predict average rating.
 
