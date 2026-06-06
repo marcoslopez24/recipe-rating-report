@@ -58,7 +58,7 @@ Null hypothesis: quick recipes, defined as recipes taking 30 minutes or less, an
 
 Alternative hypothesis: quick recipes and longer recipes have different mean average ratings.
 
-We used a two-sided permutation test with the difference in mean average rating as the test statistic. Quick recipes had a mean average rating of 4.6446, while longer recipes had a mean average rating of 4.6096. The observed difference was 0.0351 rating points. In 5,000 permutations, none of the simulated differences were at least as extreme as the observed value, so the p-value was less than 0.0002.
+We used a two-sided permutation test with the difference in mean average rating, quick recipes minus longer recipes, as the test statistic. This is a good test statistic because our question directly compares the mean rating of the two time groups. We used a 5% significance level. Quick recipes had a mean average rating of 4.6446, while longer recipes had a mean average rating of 4.6096. The observed difference was 0.0351 rating points. In 5,000 permutations, none of the simulated differences were at least as extreme as the observed value, so the p-value was less than 0.0002.
 
 At a 5% significance level, we reject the null hypothesis. The data suggests that quick and longer recipes have different mean average ratings, with quick recipes rated slightly higher. The effect is statistically significant, but it is small in practical terms because the difference is only about 0.035 points on a 1-to-5 rating scale.
 
@@ -66,7 +66,7 @@ At a 5% significance level, we reject the null hypothesis. The data suggests tha
 
 ## Framing a Prediction Problem
 
-We frame a regression problem: predict `average_rating` using recipe information known when the recipe is posted. We use RMSE as the main evaluation metric because larger prediction errors should be penalized more than small errors. We also report MAE for interpretability.
+We frame a regression problem: predict `average_rating` using recipe information known when the recipe is posted. The response variable is `average_rating`, which we chose because it summarizes how users rated each recipe after removing review-only interactions with rating 0. We use RMSE as the main evaluation metric because larger prediction errors should be penalized more than small errors. We also report MAE for interpretability.
 
 We avoid features that would not be known at prediction time, such as `rating_count`, review text, or user identifiers.
 
@@ -99,13 +99,13 @@ The improvement is modest but real. This makes sense because the target is compr
 
 ## Fairness Analysis
 
-We evaluated whether the final model performs differently for quick recipes and longer recipes. Since this is a regression model, we compare RMSE across groups.
+We evaluated whether the final model performs differently for quick recipes and longer recipes. Group X is quick recipes, defined as `minutes <= 30`, and Group Y is longer recipes, defined as `minutes > 30`. Since this is a regression model, we compare RMSE across groups.
 
 Null hypothesis: the model is fair; its RMSE for quick and longer recipes is roughly the same.
 
 Alternative hypothesis: the model is unfair; its RMSE for quick and longer recipes is different.
 
-The final model had an RMSE of 0.5945 for quick recipes and 0.6508 for longer recipes. The observed difference, RMSE(quick) minus RMSE(longer), was -0.0563. The permutation-test p-value was less than 0.001.
+Our test statistic is RMSE(quick) minus RMSE(longer), and we use a 5% significance level. The final model had an RMSE of 0.5945 for quick recipes and 0.6508 for longer recipes. The observed difference was -0.0563. The permutation-test p-value was less than 0.001.
 
 We reject the null hypothesis of equal performance. The model does not appear to perform worse for quick recipes; instead, it performs better for quick recipes and worse for longer recipes.
 
